@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 public class Capacitor extends BaseElectronicComponent {
 
-	private static final String IMAGE_PATH = "C:\\Users\\Jordon_Kayla\\workspace\\electrical-engineering\\src\\main\\resources\\Capacitor_Symbol_cellSize.png";
-	private static final Dimension DEFAULT_DIMENSION = new Dimension(20,10);
+	private static final String IMAGE_PATH = System.getProperty("user.dir")+"\\src\\main\\resources\\Capacitor_Symbol_2x.png";
+	private static final Dimension DEFAULT_DIMENSION = new Dimension(60,30);
 	
 	public Capacitor() {
 		super(IMAGE_PATH, DEFAULT_DIMENSION);

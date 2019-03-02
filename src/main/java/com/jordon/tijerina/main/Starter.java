@@ -1,7 +1,5 @@
 package com.jordon.tijerina.main;
 
-import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
 import com.jordon.tijerina.views.MainPanel;
@@ -18,8 +16,8 @@ public class Starter {
 		frame.add(mainPanel);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setSize(new Dimension(500,500));
+		frame.setLocation(100,100);
+		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
 	}

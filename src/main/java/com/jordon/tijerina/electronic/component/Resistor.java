@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 public class Resistor extends BaseElectronicComponent {
 
-	private static final String IMAGE_PATH = "C:\\Users\\Jordon_Kayla\\workspace\\electrical-engineering\\src\\main\\resources\\Resistor_Symbol_cellSize.png";
-	private static final Dimension DEFAULT_DIMENSION = new Dimension(40,9);
+	private static final String IMAGE_PATH = System.getProperty("user.dir")+"\\src\\main\\resources\\Resistor_Symbol_2x.png";
+	private static final Dimension DEFAULT_DIMENSION = new Dimension(80,18);
 
 	
 	public Resistor() {

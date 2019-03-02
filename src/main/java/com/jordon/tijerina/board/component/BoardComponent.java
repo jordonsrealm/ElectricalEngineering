@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import com.jordon.tijerina.board.layout.LayoutParameters;
 import com.jordon.tijerina.electronic.component.BaseElectronicComponent;
 import com.jordon.tijerina.electronic.component.ElectronicComponentFactory;
@@ -16,14 +15,14 @@ public class BoardComponent {
 	
 	private BaseElectronicComponent component;
 	private LayoutParameters parameters;
-	private Dimension offSetDimension;
+	private Dimension offSetDimension = new Dimension(0,0);
 	private String nickName;
-	private Boolean isActive;
-	private Boolean isHighlighted;
-	private SidePart side1;
-	private SidePart side2;
+	private Boolean isActive = false;
+	private Boolean isHighlighted = false;
+	private ConnectionPoint connection1;
+	private ConnectionPoint side2;
 	private Long uniqueId;
-	private static List<BoardComponent> createdBoardComponents = new ArrayList<BoardComponent>();
+	private static List<BoardComponent> createdBoardComponents = new ArrayList<>();
 	public static final Integer RESISTOR_TYPE  = 1;
 	public static final Integer CAPACITOR_TYPE = 2;
 	public static final Integer INDUCTOR_TYPE  = 3;
@@ -54,7 +53,7 @@ public class BoardComponent {
 		createdBoardComponents.add(boardComponent);
 	}
 	
-	public static Integer isPointWithComponents(Point pt) {
+	public static Integer isPointWithinComponents(Point pt) {
 		Integer returnVal = null;
 		BoardComponent val = null;
 		for(int x = 0; x < createdBoardComponents.size(); x++) {
@@ -67,8 +66,29 @@ public class BoardComponent {
 		return returnVal;
 	}
 	
-	public static void updateComponent(int index, BoardComponent c) {
-		createdBoardComponents.set(index, c);
+	public static void updateComponent(BoardComponent c) {
+		int index = -1;
+		for(int x = 0; x< createdBoardComponents.size(); x++) {
+			if(createdBoardComponents.get(x).getUniqueId() == c.getUniqueId()) {
+				index = x;
+				break;
+			}
+		}
+		
+		if(index > 0) {
+			createdBoardComponents.set(index, c);
+		}
+	}
+	
+	public static void updateComponentWithId(Long id, BoardComponent bc) {
+		int index = 0;
+		for(int x = 0; x < createdBoardComponents.size(); x++) {
+			if(createdBoardComponents.get(x).getUniqueId() == id) {
+				index = x;
+			}
+		}
+		
+		createdBoardComponents.set(index, bc);
 	}
 	
 	public static void resetComponents() {
@@ -105,6 +125,10 @@ public class BoardComponent {
 		this.offSetDimension = offSetDimension;
 	}
 
+	public Point getOffSetLocation() {
+		return new Point(getLocation().x - (int)getOffSetDimension().getWidth(), getLocation().y - (int)this.getOffSetDimension().getHeight());
+	}
+	
 	public void setLocation(Point location) {
 		this.parameters.setPoint(location);
 	}
@@ -125,7 +149,6 @@ public class BoardComponent {
 	}
 	public void setActive(Boolean isActive) {
 		this.isActive = isActive;
-		System.out.println("toggling..." + isActive.booleanValue());
 	}
 	public void toggleActive() {
 		if(this.isActive.booleanValue()) {
@@ -133,8 +156,6 @@ public class BoardComponent {
 		} else {
 			this.isActive = Boolean.TRUE;
 		}
-		
-
 	}
 	public Boolean isHighlighted() {
 		return isHighlighted;
@@ -144,16 +165,16 @@ public class BoardComponent {
 		this.isHighlighted = isHighlighted;
 	}
 
-	public SidePart getSide1() {
-		return side1;
+	public ConnectionPoint getSide1() {
+		return connection1;
 	}
-	public void setSide1(SidePart side1) {
-		this.side1 = side1;
+	public void setSide1(ConnectionPoint side1) {
+		this.connection1 = side1;
 	}
-	public SidePart getSide2() {
+	public ConnectionPoint getSide2() {
 		return side2;
 	}
-	public void setSide2(SidePart side2) {
+	public void setSide2(ConnectionPoint side2) {
 		this.side2 = side2;
 	}
 	public Long getUniqueId() {
@@ -162,7 +183,4 @@ public class BoardComponent {
 	public void setUniqueId(Long uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-	
-	
-	
 }
