@@ -18,6 +18,7 @@ public class MainPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private MainPanelListener mainFrameListener;
 	private Dimension preferredDimension = new Dimension(800,800);
+	private boolean blank = true;
 
 	
 	public MainPanel() {
@@ -31,8 +32,13 @@ public class MainPanel extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		if(!blank) {
+			drawBlank(g);
+		} else {
+			drawInitialSchematicView(g);
+		}
+		
 		for(BoardComponent boardComponent : BoardComponent.getCreatedBoardComponents()) {
 			LayoutParameters params = boardComponent.getLayoutParameters();
 			Point paramsPoint = params.getPoint();
@@ -45,6 +51,21 @@ public class MainPanel extends JPanel{
 				g.drawRect(paramsPoint.x, paramsPoint.y, params.getWidth(), params.getHeight());
 			}
 		}
+	}
+	
+	private void drawBlank(Graphics g){
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+	
+	private void drawInitialSchematicView(Graphics g) {
+		g.setColor(new Color(210,210,210));
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+	
+	// Used for initial schematics view
+	public void setMainPanelHealth(boolean health) {
+		this.blank = health;
 	}
 	
 	@Override

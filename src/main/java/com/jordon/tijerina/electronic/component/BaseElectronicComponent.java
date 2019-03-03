@@ -13,6 +13,9 @@ public abstract class BaseElectronicComponent {
 
 	private Dimension dimension;
 	protected BufferedImage img;
+	public static final Integer RESISTOR_TYPE  = 1;
+	public static final Integer CAPACITOR_TYPE = 2;
+	public static final Integer INDUCTOR_TYPE  = 3;
 	
 	
 	public BaseElectronicComponent(String imagePath, Dimension dimension) {
@@ -38,4 +41,6 @@ public abstract class BaseElectronicComponent {
 	}
 	
 	public abstract BufferedImage getBufferedImage();
+	
+	public abstract Integer getComponentType();
 }

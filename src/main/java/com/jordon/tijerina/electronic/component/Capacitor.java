@@ -8,6 +8,8 @@ public class Capacitor extends BaseElectronicComponent {
 
 	private static final String IMAGE_PATH = System.getProperty("user.dir")+"\\src\\main\\resources\\Capacitor_Symbol_2x.png";
 	private static final Dimension DEFAULT_DIMENSION = new Dimension(60,30);
+	private static final Integer COMPONENT_TYPE = BaseElectronicComponent.CAPACITOR_TYPE;
+	
 	
 	public Capacitor() {
 		super(IMAGE_PATH, DEFAULT_DIMENSION);
@@ -21,6 +23,12 @@ public class Capacitor extends BaseElectronicComponent {
 	@Override
 	public String getImagePath(){
 		return IMAGE_PATH;
+	}
+
+	@Override
+	public Integer getComponentType() {
+		// TODO Auto-generated method stub
+		return COMPONENT_TYPE;
 	}
 	
 }

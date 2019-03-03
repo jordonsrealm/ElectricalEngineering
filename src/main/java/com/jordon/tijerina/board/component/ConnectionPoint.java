@@ -1,6 +1,6 @@
 package com.jordon.tijerina.board.component;
 
-import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.List;
 
 
@@ -9,7 +9,7 @@ public class ConnectionPoint {
 	private boolean isHighlighted;
 	private boolean isActive;
 	private List<BoardComponent> connectedComponents;
-	private Dimension dimension;
+	private Rectangle dimension = new Rectangle();
 	
 	
 	public boolean isHighlighted() {
@@ -31,10 +31,10 @@ public class ConnectionPoint {
 		this.connectedComponents = connectedComponents;
 	}
 	
-	public Dimension getDimension() {
+	public Rectangle getBounds() {
 		return dimension;
 	}
-	public void setDimension(Dimension dimension) {
+	public void setBounds(Rectangle dimension) {
 		this.dimension = dimension;
 	}
 }

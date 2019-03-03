@@ -20,12 +20,9 @@ public class BoardComponent {
 	private Boolean isActive = false;
 	private Boolean isHighlighted = false;
 	private ConnectionPoint connection1;
-	private ConnectionPoint side2;
+	private ConnectionPoint connection2;
 	private Long uniqueId;
 	private static List<BoardComponent> createdBoardComponents = new ArrayList<>();
-	public static final Integer RESISTOR_TYPE  = 1;
-	public static final Integer CAPACITOR_TYPE = 2;
-	public static final Integer INDUCTOR_TYPE  = 3;
 	
 	
 	private BoardComponent(Integer componentType) {
@@ -35,9 +32,27 @@ public class BoardComponent {
 		
 		this.uniqueId = uniqueIdRandomized;
 		this.component = ElectronicComponentFactory.getElectronicComponent(componentType);
+		setConnectionPoints(component.getComponentType());
 		this.parameters = new LayoutParameters(component.getDimension(), null);
 	}
 	
+	private void setConnectionPoints(Integer componentType) {
+		
+		switch(componentType) {
+		case 1: Rectangle r1 = new Rectangle();
+				Rectangle r2 = new Rectangle();
+				r1.setBounds(0, 0, 10, 10);
+				r2.setBounds( 0, 0, 10, 10);
+				connection1.setBounds(r1);
+				connection2.setBounds(r2);
+				break;
+		case 2: ;
+				break;
+		case 3: ;
+				break;
+		}
+	}
+
 	private BoardComponent(Integer componentType, LayoutParameters params) {
 		this(componentType);
 		this.parameters= params;
@@ -172,10 +187,10 @@ public class BoardComponent {
 		this.connection1 = side1;
 	}
 	public ConnectionPoint getSide2() {
-		return side2;
+		return connection2;
 	}
 	public void setSide2(ConnectionPoint side2) {
-		this.side2 = side2;
+		this.connection2 = side2;
 	}
 	public Long getUniqueId() {
 		return uniqueId;

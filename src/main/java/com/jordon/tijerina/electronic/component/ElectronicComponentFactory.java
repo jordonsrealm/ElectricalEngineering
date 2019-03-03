@@ -1,6 +1,5 @@
 package com.jordon.tijerina.electronic.component;
 
-
 public class ElectronicComponentFactory {
 	
 	
@@ -14,7 +13,6 @@ public class ElectronicComponentFactory {
 		} else {
 			component = new Inductor();
 		}
-		
 		
 		return component;
 	}

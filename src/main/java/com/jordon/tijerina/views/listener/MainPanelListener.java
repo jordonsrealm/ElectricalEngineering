@@ -94,8 +94,8 @@ public class MainPanelListener implements MouseMotionListener, MouseInputListene
 	}
 	
 	private void handleBoardComponentCreation(Point point, Integer compIndex) {
+		
 		// Create Menu to select component to draw
-
 		if(compIndex != null) {
 			BoardComponentPropertyPopup popup = new BoardComponentPropertyPopup(point, mainPanel);
 			popup.show(mainPanel, point.x, point.y);
