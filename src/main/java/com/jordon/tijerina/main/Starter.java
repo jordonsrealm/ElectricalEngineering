@@ -1,9 +1,8 @@
 package com.jordon.tijerina.main;
 
-import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
+import com.jordon.tijerina.views.ElectronicMenuBar;
 import com.jordon.tijerina.views.MainPanel;
 
 
@@ -14,12 +13,17 @@ public class Starter {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame(TITLE);
 		
+		// Main drawing area
 		MainPanel mainPanel = new MainPanel();
 		frame.add(mainPanel);
 		
+		// Custom JMenubar
+		ElectronicMenuBar menubar= new ElectronicMenuBar();
+		frame.setJMenuBar(menubar);
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setSize(new Dimension(500,500));
+		frame.setLocation(100,100);
+		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
 	}

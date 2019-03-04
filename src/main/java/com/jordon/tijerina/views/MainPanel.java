@@ -9,19 +9,20 @@ import javax.swing.JPanel;
 
 import com.jordon.tijerina.board.component.BoardComponent;
 import com.jordon.tijerina.board.layout.LayoutParameters;
-import com.jordon.tijerina.views.listener.MainFrameListener;
+import com.jordon.tijerina.views.listener.MainPanelListener;
 
 
 public class MainPanel extends JPanel{
 
 	/**/
 	private static final long serialVersionUID = 1L;
-	private MainFrameListener mainFrameListener;
-	private Dimension preferredDimension = new Dimension(500,500);
+	private MainPanelListener mainFrameListener;
+	private Dimension preferredDimension = new Dimension(800,800);
+	private boolean blank = true;
 
 	
 	public MainPanel() {
-		mainFrameListener = new MainFrameListener(this);
+		mainFrameListener = new MainPanelListener(this);
 		this.addMouseMotionListener(mainFrameListener);
 		this.addMouseListener(mainFrameListener);
 		this.addKeyListener(mainFrameListener);
@@ -31,6 +32,13 @@ public class MainPanel extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		if(!blank) {
+			drawBlank(g);
+		} else {
+			drawInitialSchematicView(g);
+		}
+		
 		for(BoardComponent boardComponent : BoardComponent.getCreatedBoardComponents()) {
 			LayoutParameters params = boardComponent.getLayoutParameters();
 			Point paramsPoint = params.getPoint();
@@ -38,16 +46,26 @@ public class MainPanel extends JPanel{
 
 			g.setColor(Color.red);
 			
-			// Highlighted part
-			if(boardComponent.isHighlighted() != null && boardComponent.isHighlighted().booleanValue() ) {
-				g.drawRect(paramsPoint.x, paramsPoint.y, params.getWidth(), params.getHeight());
-			}
-			
-			// Activated part
-			if(boardComponent.isActive() != null && boardComponent.isActive().booleanValue()) {
+			// Highlighted part, Activated part
+			if((boardComponent.isHighlighted() != null && boardComponent.isHighlighted().booleanValue()) || (boardComponent.isActive() != null && boardComponent.isActive().booleanValue())) {
 				g.drawRect(paramsPoint.x, paramsPoint.y, params.getWidth(), params.getHeight());
 			}
 		}
+	}
+	
+	private void drawBlank(Graphics g){
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+	
+	private void drawInitialSchematicView(Graphics g) {
+		g.setColor(new Color(210,210,210));
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+	
+	// Used for initial schematics view
+	public void setMainPanelHealth(boolean health) {
+		this.blank = health;
 	}
 	
 	@Override
@@ -55,11 +73,11 @@ public class MainPanel extends JPanel{
 		return preferredDimension;
 	}
 
-	public MainFrameListener getMainFrameListener() {
+	public MainPanelListener getMainFrameListener() {
 		return mainFrameListener;
 	}
 
-	public void setMainFrameListener(MainFrameListener mainFrameListener) {
+	public void setMainFrameListener(MainPanelListener mainFrameListener) {
 		this.mainFrameListener = mainFrameListener;
 	}
 	

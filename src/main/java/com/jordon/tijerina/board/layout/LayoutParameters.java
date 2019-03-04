@@ -26,6 +26,9 @@ public class LayoutParameters {
 		locationOnBoard = pt;
 	}
 	
+	public Dimension getParamsAsDimension() {
+		return new Dimension(width, height);
+	}
 	
 	public int getWidth() {
 		return width;

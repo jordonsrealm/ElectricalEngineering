@@ -8,6 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import com.jordon.tijerina.board.component.BoardComponent;
+import com.jordon.tijerina.electronic.component.BaseElectronicComponent;
 
 
 public class BoardComponentPopup extends JPopupMenu implements ActionListener{
@@ -49,11 +50,11 @@ public class BoardComponentPopup extends JPopupMenu implements ActionListener{
 		String str = mitem.getText();
 		
 		if(RESISTOR.equals(str)) {
-			BoardComponent.createBoardComponent(BoardComponent.RESISTOR_TYPE, popUpLocation);
+			BoardComponent.createBoardComponent(BaseElectronicComponent.RESISTOR_TYPE, popUpLocation);
 		} else if(CAPACITOR.equals(str)) {
-			BoardComponent.createBoardComponent(BoardComponent.CAPACITOR_TYPE, popUpLocation);
+			BoardComponent.createBoardComponent(BaseElectronicComponent.CAPACITOR_TYPE, popUpLocation);
 		} else {
-			BoardComponent.createBoardComponent(BoardComponent.INDUCTOR_TYPE, popUpLocation);
+			BoardComponent.createBoardComponent(BaseElectronicComponent.INDUCTOR_TYPE, popUpLocation);
 		}
 	}
 
