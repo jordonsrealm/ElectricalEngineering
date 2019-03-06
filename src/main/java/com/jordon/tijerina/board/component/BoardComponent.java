@@ -6,14 +6,19 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import com.jordon.tijerina.board.AreaManager;
+import com.jordon.tijerina.board.component.description.BoardAreaAttribute;
 import com.jordon.tijerina.board.layout.LayoutParameters;
 import com.jordon.tijerina.electronic.component.BaseElectronicComponent;
 import com.jordon.tijerina.electronic.component.ElectronicComponentFactory;
 
 
 public class BoardComponent {
+	private static List<BoardComponent> createdBoardComponents = new ArrayList<BoardComponent>();
 	
 	private BaseElectronicComponent component;
+	private Long uniqueId;
 	private LayoutParameters parameters;
 	private Dimension offSetDimension = new Dimension(0,0);
 	private String nickName;
@@ -21,9 +26,8 @@ public class BoardComponent {
 	private Boolean isHighlighted = false;
 	private ConnectionPoint connection1;
 	private ConnectionPoint connection2;
-	private Long uniqueId;
-	private static List<BoardComponent> createdBoardComponents = new ArrayList<>();
-	
+	private AreaManager areaManager;
+
 	
 	private BoardComponent(Integer componentType) {
 		Long uniqueIdRandomized;
@@ -32,25 +36,36 @@ public class BoardComponent {
 		
 		this.uniqueId = uniqueIdRandomized;
 		this.component = ElectronicComponentFactory.getElectronicComponent(componentType);
-		setConnectionPoints(component.getComponentType());
+		this.areaManager.setAttributes(getAreaManager(component.getComponentType()));
 		this.parameters = new LayoutParameters(component.getDimension(), null);
 	}
 	
-	private void setConnectionPoints(Integer componentType) {
+	private List<BoardAreaAttribute> getAreaManager(Integer componentType) {
+		BoardAreaAttribute leftSide = new BoardAreaAttribute();
+		BoardAreaAttribute middle = new BoardAreaAttribute();
+		BoardAreaAttribute rightSide = new BoardAreaAttribute();
 		
 		switch(componentType) {
-		case 1: Rectangle r1 = new Rectangle();
-				Rectangle r2 = new Rectangle();
-				r1.setBounds(0, 0, 10, 10);
-				r2.setBounds( 0, 0, 10, 10);
-				connection1.setBounds(r1);
-				connection2.setBounds(r2);
+		case 1: leftSide.setRect(new Rectangle());
+				middle.setRect(new Rectangle());
+				rightSide.setRect(new Rectangle());
 				break;
-		case 2: ;
+		case 2: leftSide.setRect(new Rectangle());
+				middle.setRect(new Rectangle());
+				rightSide.setRect(new Rectangle());
 				break;
-		case 3: ;
+		case 3: leftSide.setRect(new Rectangle());
+				middle.setRect(new Rectangle());
+				rightSide.setRect(new Rectangle());
 				break;
 		}
+		
+		ArrayList<BoardAreaAttribute> list = new ArrayList<BoardAreaAttribute>();
+		list.add(leftSide);
+		list.add(middle);
+		list.add(rightSide);
+		
+		return list;
 	}
 
 	private BoardComponent(Integer componentType, LayoutParameters params) {

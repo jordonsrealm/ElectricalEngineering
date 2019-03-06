@@ -23,6 +23,7 @@ public class MainPanel extends JPanel{
 	
 	public MainPanel() {
 		mainFrameListener = new MainPanelListener(this);
+		
 		this.addMouseMotionListener(mainFrameListener);
 		this.addMouseListener(mainFrameListener);
 		this.addKeyListener(mainFrameListener);
@@ -47,7 +48,8 @@ public class MainPanel extends JPanel{
 			g.setColor(Color.red);
 			
 			// Highlighted part, Activated part
-			if((boardComponent.isHighlighted() != null && boardComponent.isHighlighted().booleanValue()) || (boardComponent.isActive() != null && boardComponent.isActive().booleanValue())) {
+			if((boardComponent.isHighlighted() != null && boardComponent.isHighlighted().booleanValue()) || 
+					(boardComponent.isActive() != null && boardComponent.isActive().booleanValue())) {
 				g.drawRect(paramsPoint.x, paramsPoint.y, params.getWidth(), params.getHeight());
 			}
 		}

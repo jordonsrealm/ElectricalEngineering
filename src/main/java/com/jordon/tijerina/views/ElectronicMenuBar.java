@@ -24,6 +24,4 @@ public class ElectronicMenuBar extends JMenuBar{
 		
 		this.add(menu);
 	}
-	
-	
 }
