@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.swing.event.MouseInputListener;
 
 import com.jordon.tijerina.board.component.BoardComponent;
+import com.jordon.tijerina.board.helper.RectangleHelper;
 import com.jordon.tijerina.views.BoardComponentPopup;
 import com.jordon.tijerina.views.BoardComponentPropertyPopup;
 import com.jordon.tijerina.views.MainPanel;
@@ -37,8 +38,8 @@ public class MainPanelListener implements MouseMotionListener, MouseInputListene
 	}
 
 	public void mouseDragged(MouseEvent draggedPoint) {
-		Point pt = draggedPoint.getPoint();
-		List<BoardComponent> comps = BoardComponent.getCreatedBoardComponents().stream().filter(n->n.getRectangle().contains(pt)).collect(Collectors.toList());
+		Point initiallyDraggedPoint = draggedPoint.getPoint();
+		List<BoardComponent> comps = BoardComponent.getCreatedBoardComponents().stream().filter(n->n.getBoardComponentLocation().contains(initiallyDraggedPoint)).collect(Collectors.toList());
 		
 		// Check to see if the component can be dragged
 		if(!comps.isEmpty()) {
@@ -46,20 +47,17 @@ public class MainPanelListener implements MouseMotionListener, MouseInputListene
 			BoardComponent component = comps.get(0);
 			
 			// Create point to test against other components
-			Point testPoint = new Point(pt.x - (int)component.getOffSetDimension().getWidth(), 
-										pt.y - (int)component.getOffSetDimension().getHeight());
+			Point testPoint = new Point(initiallyDraggedPoint.x - (int)component.getOffSetDimension().getWidth(), 
+										initiallyDraggedPoint.y - (int)component.getOffSetDimension().getHeight());
 			
 			// Check for other components in the way
-			Rectangle newPlacement = new Rectangle( testPoint, 
-													component.getLayoutParameters().getParamsAsDimension());
+			Rectangle newPlacement = new Rectangle( testPoint, component.getBoardComponentDimension());
 			
-			boolean intersectionExists = BoardComponent.getCreatedBoardComponents().stream().anyMatch(n->n.getRectangle().intersects(newPlacement) && n.getUniqueId() != component.getUniqueId());
+			boolean intersectionExists = BoardComponent.getCreatedBoardComponents().stream().anyMatch(n->n.getBoardComponentLocation().intersects(newPlacement) && n.getUniqueId() != component.getUniqueId());
 			if(!intersectionExists) {
-				Rectangle rect = component.getRectangle();
+				Rectangle oldRectangle = component.getBoardComponentLocation();
 				component.setLocation(testPoint);
-				rect.add(component.getRectangle());
-				rect.grow(1, 1);
-				mainPanel.repaint(rect);
+				mainPanel.repaint();
 			}
 		}
 	}
@@ -67,7 +65,7 @@ public class MainPanelListener implements MouseMotionListener, MouseInputListene
 	public void mouseMoved(MouseEvent movedPoint) {
 		for(BoardComponent boardComponent: BoardComponent.getCreatedBoardComponents()) {
 			boardComponent.setHighlighted(false);
-			if(boardComponent.getRectangle().contains(movedPoint.getPoint())) {
+			if(boardComponent.getBoardComponentLocation().contains(movedPoint.getPoint())) {
 				boardComponent.setHighlighted(true);
 			}
 		}
@@ -88,7 +86,7 @@ public class MainPanelListener implements MouseMotionListener, MouseInputListene
 			if(me.isRightClick()) {
 				handleBoardComponentCreation(point, compIndex);
 			} else {
-				handleActivation(point, compIndex);
+				handleBoardComponentActivation(point, compIndex);
 			}
 		}
 	}
@@ -105,7 +103,7 @@ public class MainPanelListener implements MouseMotionListener, MouseInputListene
 		}
 	}
 
-	private void handleActivation(Point point, Integer compIndex) {
+	private void handleBoardComponentActivation(Point point, Integer compIndex) {
 		BoardComponent.resetComponents();
 		
 		if( compIndex != null) {
@@ -130,7 +128,7 @@ public class MainPanelListener implements MouseMotionListener, MouseInputListene
 	public void mousePressed(MouseEvent pressedPoint) {
 		for(BoardComponent boardComponent: BoardComponent.getCreatedBoardComponents()) {
 			boardComponent.setHighlighted(false);
-			if(boardComponent.getRectangle().contains(pressedPoint.getPoint())) {
+			if(boardComponent.getBoardComponentLocation().contains(pressedPoint.getPoint())) {
 				boardComponent.setOffSetDimension(new Dimension(Math.abs((int)boardComponent.getLocation().x - pressedPoint.getX()) , 
 																Math.abs((int)boardComponent.getLocation().y - pressedPoint.getY())
 																)

@@ -9,7 +9,6 @@ import java.util.Random;
 
 import com.jordon.tijerina.board.AreaManager;
 import com.jordon.tijerina.board.component.description.BoardAreaAttribute;
-import com.jordon.tijerina.board.layout.LayoutParameters;
 import com.jordon.tijerina.electronic.component.BaseElectronicComponent;
 import com.jordon.tijerina.electronic.component.ElectronicComponentFactory;
 
@@ -19,7 +18,7 @@ public class BoardComponent {
 	
 	private BaseElectronicComponent component;
 	private Long uniqueId;
-	private LayoutParameters parameters;
+	//private LayoutParameters parameters;
 	private Dimension offSetDimension = new Dimension(0,0);
 	private String nickName;
 	private Boolean isActive = false;
@@ -27,6 +26,7 @@ public class BoardComponent {
 	private ConnectionPoint connection1;
 	private ConnectionPoint connection2;
 	private AreaManager areaManager;
+	private Rectangle boardLocation;
 
 	
 	private BoardComponent(Integer componentType) {
@@ -36,8 +36,9 @@ public class BoardComponent {
 		
 		this.uniqueId = uniqueIdRandomized;
 		this.component = ElectronicComponentFactory.getElectronicComponent(componentType);
-		this.areaManager.setAttributes(getAreaManager(component.getComponentType()));
-		this.parameters = new LayoutParameters(component.getDimension(), null);
+		//this.areaManager.setBoardAttributes(getAreaManager(component.getComponentType()));
+		//this.parameters = new LayoutParameters(component.getDimension(), null);
+		this.boardLocation = new Rectangle(new Point(0,0), component.getDimension());
 	}
 	
 	private List<BoardAreaAttribute> getAreaManager(Integer componentType) {
@@ -46,7 +47,9 @@ public class BoardComponent {
 		BoardAreaAttribute rightSide = new BoardAreaAttribute();
 		
 		switch(componentType) {
-		case 1: leftSide.setRect(new Rectangle());
+		case 1: Point pt1      = new Point();
+				Dimension dim1 = new Dimension();
+				leftSide.setRect(new Rectangle(pt1, dim1));
 				middle.setRect(new Rectangle());
 				rightSide.setRect(new Rectangle());
 				break;
@@ -68,9 +71,9 @@ public class BoardComponent {
 		return list;
 	}
 
-	private BoardComponent(Integer componentType, LayoutParameters params) {
+	private BoardComponent(Integer componentType, Rectangle params) {
 		this(componentType);
-		this.parameters= params;
+		this.boardLocation= params;
 	}
 	
 	public static void createBoardComponent(Integer componentType) {
@@ -79,16 +82,16 @@ public class BoardComponent {
 	
 	public static void createBoardComponent(Integer componentType, Point location) {
 		BoardComponent boardComponent = new BoardComponent(componentType);
-		boardComponent.setParameters(new LayoutParameters(boardComponent.getComponent().getDimension(), location));
+		boardComponent.setBoardComponentLocation(new Rectangle( location, boardComponent.getComponent().getDimension()));
 		createdBoardComponents.add(boardComponent);
 	}
 	
 	public static Integer isPointWithinComponents(Point pt) {
 		Integer returnVal = null;
-		BoardComponent val = null;
+		BoardComponent boarComponent = null;
 		for(int x = 0; x < createdBoardComponents.size(); x++) {
-			val = createdBoardComponents.get(x);
-			if(val.getRectangle().contains(pt)) {
+			boarComponent = createdBoardComponents.get(x);
+			if(boarComponent.getBoardComponentLocation().contains(pt)) {
 				returnVal = x;
 			}
 		}
@@ -141,11 +144,15 @@ public class BoardComponent {
 	public void setComponent(BaseElectronicComponent component) {
 		this.component = component;
 	}
-	public LayoutParameters getLayoutParameters() {
-		return parameters;
+	public Rectangle getBoardComponentLocation() {
+		return boardLocation;
 	}
-	public void setParameters(LayoutParameters parameters) {
-		this.parameters = parameters;
+	public void setBoardComponentLocation(Rectangle parameters) {
+		this.boardLocation = parameters;
+	}
+	
+	public Dimension getBoardComponentDimension() {
+		return boardLocation.getSize();
 	}
 	public Dimension getOffSetDimension() {
 		return offSetDimension;
@@ -160,13 +167,12 @@ public class BoardComponent {
 	}
 	
 	public void setLocation(Point location) {
-		this.parameters.setPoint(location);
+		this.boardLocation.setLocation(location);
+		// update call to AreaManager
+		
 	}
 	public Point getLocation() {
-		return this.parameters.getPoint();
-	}
-	public Rectangle getRectangle() {
-		return new Rectangle(parameters.getPoint(), component.getDimension());
+		return this.boardLocation.getLocation();
 	}
 	public String getNickName() {
 		return nickName;
@@ -212,5 +218,13 @@ public class BoardComponent {
 	}
 	public void setUniqueId(Long uniqueId) {
 		this.uniqueId = uniqueId;
+	}
+
+	public AreaManager getAreaManager() {
+		return areaManager;
+	}
+
+	public void setAreaManager(AreaManager areaManager) {
+		this.areaManager = areaManager;
 	}
 }

@@ -27,11 +27,11 @@ public class AreaManager{
 		// see if I can get a equals comparator for list to remove by Id instead of having to check it
 	}
 
-	public List<BoardAreaAttribute> getAttributes() {
+	public List<BoardAreaAttribute> getBoardAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(List<BoardAreaAttribute> attributes) {
+	public void setBoardAttributes(List<BoardAreaAttribute> attributes) {
 		this.attributes = attributes;
 	}
 }
